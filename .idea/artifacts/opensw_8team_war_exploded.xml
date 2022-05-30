@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="opensw_8team:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/opensw_8team_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="opensw_8team/web/웹" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="opensw_8team" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
