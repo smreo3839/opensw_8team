@@ -74,7 +74,7 @@ public class ApiExplorer {
         }
         rd.close();
         conn.disconnect();
-        System.out.println("test_xmlDownload_02"+sb.toString());
+        System.out.println("test_xmlDownload_02" + sb.toString());
         return sb.toString();
     }
 
@@ -93,17 +93,26 @@ public class ApiExplorer {
             Node node = nodeList.item(i);
             //태그안에 있는 요소를 가져오기위해 Element를 형변환 하여 다시 담아줌
             Element e = (Element) node;
-            item.setEntpName(e.getElementsByTagName("entpName").item(0).getTextContent());
             item.setItemName(e.getElementsByTagName("itemName").item(0).getTextContent());
-            item.setItemSeq(e.getElementsByTagName("efcyQesitm").item(0).getTextContent());
+            item.setEntpName(e.getElementsByTagName("entpName").item(0).getTextContent());
             item.setItemImage(e.getElementsByTagName("itemImage").item(0).getTextContent());
             item.setEfcyQesitm(e.getElementsByTagName("efcyQesitm").item(0).getTextContent());
             item.setAtpnWarnQesitm(e.getElementsByTagName("atpnWarnQesitm").item(0).getTextContent());
             item.setUseMethodQesitm(e.getElementsByTagName("useMethodQesitm").item(0).getTextContent());
+            item.setSeQesitm(e.getElementsByTagName("seQesitm").item(0).getTextContent());
+            item.setAtpnQesitm(e.getElementsByTagName("atpnQesitm").item(0).getTextContent());
+            item.setDepositMethodQesitm(e.getElementsByTagName("depositMethodQesitm").item(0).getTextContent());
+            item.setIntrcQesitm(e.getElementsByTagName("intrcQesitm").item(0).getTextContent());
             list.add(item);
         }
 
-        System.out.println(doc);
+        System.out.println(list.get(0).getItemName());
+        System.out.println(list.get(0).getEfcyQesitm());
+        System.out.println(list.get(0).getUseMethodQesitm());
+        System.out.println(list.get(0).getAtpnQesitm());
+        System.out.println(list.get(0).getSeQesitm());
+        System.out.println(list.get(0).getDepositMethodQesitm());
+        System.out.println(list.get(0).getIntrcQesitm());
 
 
         return list;

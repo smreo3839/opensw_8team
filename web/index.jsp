@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Blog Post - Start Bootstrap Template</title>
+    <title>오픈소스프로젝트_8팀</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -13,28 +13,45 @@
     <%@ page import="test.ApiExplorer" %>
     <%@ page import="test.Item" %>
     <%@ page import="java.util.*" %>
+
+    <script type="text/javascript">
+
+        function keyword_check() {//검색창
+            if (document.search.search_value.value == '') { //검색어가 없을 경우
+                alert('검색어를 입력하세요'); //경고창 띄움
+                document.search.search_value.focus(); //다시 검색창으로 돌아감
+                return false;
+            } else return true;
+        }
+
+    </script>
 </head>
 <body>
 <%
+    request.setCharacterEncoding("utf-8");
+    String search_value = null;
+    search_value = request.getParameter("search_value");
+    if (search_value == null) {
+        search_value = "닥터베아제정";
+    }
     ApiExplorer ae = new ApiExplorer();
-    ArrayList<Item> list = ae.getItemList("엘도브론정(에르도스테인)");
-    String imgsrc = list.get(0).getItemImage();
-    System.out.println(imgsrc);
+    ArrayList<Item> list = ae.getItemList(search_value);
+    System.out.println("search_value : " + search_value);
 %>
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#!">Start Bootstrap</a>
+        <a class="navbar-brand" href="#!">medicine community</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-            </ul>
+<%--            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">--%>
+<%--                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>--%>
+<%--                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>--%>
+<%--                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>--%>
+<%--                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>--%>
+<%--            </ul>--%>
         </div>
     </div>
 </nav>
@@ -47,7 +64,8 @@
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
-                    <h1 class="fw-bolder mb-1"><%=list.get(0).itemName%></h1>
+                    <h1 class="fw-bolder mb-1"><%=list.get(0).getItemName()%>
+                    </h1>
                     <!-- Post meta content-->
                     <div class="text-muted fst-italic mb-2">Posted on January 1, 2021 by Start Bootstrap</div>
                     <!-- Post categories-->
@@ -55,25 +73,28 @@
                     <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                 </header>
                 <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded" src=<%=imgsrc%> alt="..."/></figure>
+                <figure class="mb-4"><img class="img-fluid rounded" src=<%=list.get(0).getItemImage()%> alt="..."/>
+                </figure>
                 <!-- Post content-->
                 <section class="mb-5">
-                    <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free
-                        human mind. Because it transforms who we are, how we live, and it gives us an understanding of
-                        our place in the universe.</p>
-                    <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are
-                        everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of
-                        not the life became intelligent is a different question, and we'll see if we find that.</p>
-                    <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and
-                        carry enough energy into our system to disrupt transportation, communication, the food chains,
-                        and that can be a really bad day on Earth.</p>
-                    <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
-                    <p class="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts
-                        every day and I realized I could hold them to myself or share them with people who might be
-                        interested.</p>
-                    <p class="fs-5 mb-4">Venus has a runaway greenhouse effect. I kind of want to know what happened
-                        there because we're twirling knobs here on Earth without knowing the consequences of it. Mars
-                        once had running water. It's bone dry today. Something bad happened there as well.</p>
+                    <h2 class="fw-bolder mb-4 mt-5">효능</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getEfcyQesitm()%>
+                    </p>
+                    <h2 class="fw-bolder mb-4 mt-5">사용법</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getUseMethodQesitm()%>
+                    </p>
+                    <h2 class="fw-bolder mb-4 mt-5">주의 사항</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getAtpnQesitm()%>
+                    </p>
+                    <h2 class="fw-bolder mb-4 mt-5">이상반응</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getSeQesitm()%>
+                    </p>
+                    <h2 class="fw-bolder mb-4 mt-5">보관방법</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getDepositMethodQesitm()%>
+                    </p>
+                    <h2 class="fw-bolder mb-4 mt-5">같이 복용하면 안되는 약 또는 음식</h2>
+                    <p class="fs-5 mb-4"><%=list.get(0).getIntrcQesitm()%>
+                    </p>
                 </section>
             </article>
             <!-- Comments section-->
@@ -140,9 +161,13 @@
                 <div class="card-header">Search</div>
                 <div class="card-body">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..."
-                               aria-label="Enter search term..." aria-describedby="button-search"/>
-                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        <form name="search" action="index.jsp" onsubmit="return keyword_check()">
+                            <input class="form-control" type="text" placeholder="Enter search term..."
+                                   aria-label="Enter search term..." aria-describedby="button-search"
+                                   name="search_value"
+                            />
+                            <button class="btn btn-primary" id="button-search" type="submit" value="search">Go!</button>
+                        </form>
                     </div>
                 </div>
             </div>
