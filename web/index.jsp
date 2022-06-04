@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -35,7 +36,12 @@
         search_value = "닥터베아제정";
     }
     ApiExplorer ae = new ApiExplorer();
-    ArrayList<Item> list = ae.getItemList(search_value);
+    ArrayList<Item> list = ae.getItemList(search_value); //검색정보값
+    List<String> itmname_all = new ArrayList<>();
+    for (Item xx : list) {
+        itmname_all.add(xx.getItemName());
+    }
+    request.setAttribute("itmname_all", itmname_all);//천제 검색기록값의 제품 이름을 배열로 저장
     System.out.println("search_value : " + search_value);
 %>
 <!-- Responsive navbar-->
@@ -46,12 +52,12 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-<%--            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">--%>
-<%--                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>--%>
-<%--                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>--%>
-<%--                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>--%>
-<%--                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>--%>
-<%--            </ul>--%>
+            <%--            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">--%>
+            <%--                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>--%>
+            <%--                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>--%>
+            <%--                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>--%>
+            <%--                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>--%>
+            <%--            </ul>--%>
         </div>
     </div>
 </nav>
@@ -67,10 +73,14 @@
                     <h1 class="fw-bolder mb-1"><%=list.get(0).getItemName()%>
                     </h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2">Posted on January 1, 2021 by Start Bootstrap</div>
+                    <div class="text-muted fst-italic mb-2"><%=list.get(0).entpName%></div>
                     <!-- Post categories-->
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                    <div class="text-muted fst-italic mb-2">유사 의약품</div>
+                    <c:forEach var="tmp" items="${requestScope.itmname_all}">
+                        <a class="badge bg-secondary text-decoration-none link-light"
+                           href='?search_value=${tmp}'>${tmp}</a>
+                    </c:forEach>
+
                 </header>
                 <!-- Preview image figure-->
                 <figure class="mb-4"><img class="img-fluid rounded" src=<%=list.get(0).getItemImage()%> alt="..."/>

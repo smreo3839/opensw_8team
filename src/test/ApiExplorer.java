@@ -31,11 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class ApiExplorer {
-//    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
-//        ApiExplorer ae = new ApiExplorer();
-//        ArrayList<Item> list = ae.getItemList("낙센정(나프록센)");
-//        System.out.println(list.get(0).getItemImage());
-//    }
+
 
     public static String xmlDownload(String ItmName) throws IOException {
         System.out.println("test_xmlDownload : " + ItmName);
@@ -105,15 +101,6 @@ public class ApiExplorer {
             item.setIntrcQesitm(e.getElementsByTagName("intrcQesitm").item(0).getTextContent());
             list.add(item);
         }
-
-        System.out.println(list.get(0).getItemName());
-        System.out.println(list.get(0).getEfcyQesitm());
-        System.out.println(list.get(0).getUseMethodQesitm());
-        System.out.println(list.get(0).getAtpnQesitm());
-        System.out.println(list.get(0).getSeQesitm());
-        System.out.println(list.get(0).getDepositMethodQesitm());
-        System.out.println(list.get(0).getIntrcQesitm());
-
 
         return list;
     }
