@@ -30,19 +30,25 @@
 <body>
 <%
     request.setCharacterEncoding("utf-8");
-    String search_value = null;
+    String search_value, searchField;
     search_value = request.getParameter("search_value");
-    if (search_value == null) {
+    searchField = request.getParameter("searchField");
+    ApiExplorer ae = new ApiExplorer();
+    if (search_value == null) {//임시
         search_value = "닥터베아제정";
     }
-    ApiExplorer ae = new ApiExplorer();
-    ArrayList<Item> list = ae.getItemList(search_value); //검색정보값
+    if (searchField == null) {//임시
+        searchField = "itmname";
+    }
+    System.out.println("search_value : " + search_value);
+    System.out.println("searchField : " + searchField);
+    ArrayList<Item> list = ae.getItemList(search_value, searchField); //검색정보값
     List<String> itmname_all = new ArrayList<>();
     for (Item xx : list) {
         itmname_all.add(xx.getItemName());
     }
     request.setAttribute("itmname_all", itmname_all);//천제 검색기록값의 제품 이름을 배열로 저장
-    System.out.println("search_value : " + search_value);
+
 %>
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -73,13 +79,10 @@
                     <h1 class="fw-bolder mb-1"><%=list.get(0).getItemName()%>
                     </h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2"><%=list.get(0).entpName%></div>
+                    <div class="text-muted fst-italic mb-2"><%=list.get(0).entpName%>
+                    </div>
                     <!-- Post categories-->
-                    <div class="text-muted fst-italic mb-2">유사 의약품</div>
-                    <c:forEach var="tmp" items="${requestScope.itmname_all}">
-                        <a class="badge bg-secondary text-decoration-none link-light"
-                           href='?search_value=${tmp}'>${tmp}</a>
-                    </c:forEach>
+
 
                 </header>
                 <!-- Preview image figure-->
@@ -172,6 +175,11 @@
                 <div class="card-body">
                     <div class="input-group">
                         <form name="search" action="index.jsp" onsubmit="return keyword_check()">
+                            <td><select class="form-control" name="searchField">
+                                <option value="itmname">상품이름</option>
+                                <option value="symptom">증상</option>
+                                <option value="manufacturer">제약회사</option>
+                            </select></td>
                             <input class="form-control" type="text" placeholder="Enter search term..."
                                    aria-label="Enter search term..." aria-describedby="button-search"
                                    name="search_value"
@@ -182,32 +190,34 @@
                 </div>
             </div>
             <!-- Categories widget-->
-            <div class="card mb-4">
-                <div class="card-header">Categories</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">Web Design</a></li>
-                                <li><a href="#!">HTML</a></li>
-                                <li><a href="#!">Freebies</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">JavaScript</a></li>
-                                <li><a href="#!">CSS</a></li>
-                                <li><a href="#!">Tutorials</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<%--            <div class="card mb-4">--%>
+<%--                <div class="card-header">Categories</div>--%>
+<%--                <div class="card-body">--%>
+<%--                    <div class="row">--%>
+<%--                        <div class="col-sm-6">--%>
+<%--                            <ul class="list-unstyled mb-0">--%>
+<%--                                <li><a href="#!">Web Design</a></li>--%>
+<%--                                <li><a href="#!">HTML</a></li>--%>
+<%--                                <li><a href="#!">Freebies</a></li>--%>
+<%--                            </ul>--%>
+<%--                        </div>--%>
+<%--                        <div class="col-sm-6">--%>
+<%--                            <ul class="list-unstyled mb-0">--%>
+<%--                                <li><a href="#!">JavaScript</a></li>--%>
+<%--                                <li><a href="#!">CSS</a></li>--%>
+<%--                                <li><a href="#!">Tutorials</a></li>--%>
+<%--                            </ul>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
             <!-- Side widget-->
             <div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use,
-                    and feature the Bootstrap 5 card component!
+                <div class="card-header">검색결과</div>
+                <div class="card-body"><c:forEach var="tmp" items="${requestScope.itmname_all}">
+                    <a class="badge bg-secondary text-decoration-none link-light"
+                       href='?search_value=${tmp}'>${tmp}</a>
+                </c:forEach>
                 </div>
             </div>
         </div>

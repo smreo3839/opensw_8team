@@ -33,16 +33,22 @@ import java.io.IOException;
 public class ApiExplorer {
 
 
-    public static String xmlDownload(String ItmName) throws IOException {
-        System.out.println("test_xmlDownload : " + ItmName);
+    public static String xmlDownload(String searchValue, String searchField) throws IOException {
+        System.out.println("test_xmlDownload : " + searchValue);
+        System.out.println("test_xmlDownload : " + searchField);
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=wxqzx0cNT1VuuHT1VKBHZ0lqoTf0hnLP58xaJH2Mf4teDIv2drl%2Frl0%2FWlJuWHVO13b58mvMtKcB07CBU3jk4A%3D%3D"); /*Service Key*/
 //        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
-//        urlBuilder.append("&" + URLEncoder.encode("entpName","UTF-8") + "=" + URLEncoder.encode("한미약품(주)", "UTF-8")); /*업체명*/
-        urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(ItmName, "UTF-8")); /*제품명*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("50", "UTF-8")); /*한 페이지 결과 수*/
+        if (searchField.equals("itmname")) {//상품이름으로 검색
+            urlBuilder.append("&" + URLEncoder.encode("itemName", "UTF-8") + "=" + URLEncoder.encode(searchValue, "UTF-8")); /*제품명*/
+        } else if (searchField.equals("symptom")) {//증상으로 검색
+            urlBuilder.append("&" + URLEncoder.encode("efcyQesitm", "UTF-8") + "=" + URLEncoder.encode(searchValue, "UTF-8")); /*이 약의 효능은 무엇입니까?*/
+        } else if (searchField.equals("manufacturer")) {
+            urlBuilder.append("&" + URLEncoder.encode("entpName", "UTF-8") + "=" + URLEncoder.encode(searchValue, "UTF-8")); /*업체명*/
+        }
 //        urlBuilder.append("&" + URLEncoder.encode("itemSeq","UTF-8") + "=" + URLEncoder.encode("200003092", "UTF-8")); /*품목기준코드*/
-//        urlBuilder.append("&" + URLEncoder.encode("efcyQesitm","UTF-8") + "=" + URLEncoder.encode("이 약은 심근경색, 뇌경색, 불안정형 협심증에서 혈전 생성 억제와...", "UTF-8")); /*이 약의 효능은 무엇입니까?*/
+
 //        urlBuilder.append("&" + URLEncoder.encode("useMethodQesitm","UTF-8") + "=" + URLEncoder.encode("성인은 1회 1정, 1일 1회 복용합니다..", "UTF-8")); /*이 약은 어떻게 사용합니까?*/
 //        urlBuilder.append("&" + URLEncoder.encode("atpnWarnQesitm","UTF-8") + "=" + URLEncoder.encode("매일 세잔 이상 정기적 음주자가 이 약 또는 다른 해열진통제를 복용할 때는...", "UTF-8")); /*이 약을 사용하기 전에 반드시 알아야 할 내용은 무엇입니까?*/
 //        urlBuilder.append("&" + URLEncoder.encode("atpnQesitm","UTF-8") + "=" + URLEncoder.encode("이 약 또는 다른 살리실산제제, 진통제, 소염제, 항류마티스제에 대한 과민증 환자...", "UTF-8")); /*이 약의 사용상 주의사항은 무엇입니까?*/
@@ -52,6 +58,7 @@ public class ApiExplorer {
 //        urlBuilder.append("&" + URLEncoder.encode("openDe","UTF-8") + "=" + URLEncoder.encode("20200901", "UTF-8")); /*공개일자*/
 //        urlBuilder.append("&" + URLEncoder.encode("updateDe","UTF-8") + "=" + URLEncoder.encode("20200905", "UTF-8")); /*수정일자*/
 //        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
+        System.out.println(urlBuilder.toString());
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -74,9 +81,9 @@ public class ApiExplorer {
         return sb.toString();
     }
 
-    public ArrayList<Item> getItemList(String ItmName) throws IOException, ParserConfigurationException, SAXException {
+    public ArrayList<Item> getItemList(String searchValue, String searchField) throws IOException, ParserConfigurationException, SAXException {
         ArrayList<Item> list = new ArrayList<Item>();
-        String xml = ApiExplorer.xmlDownload(ItmName);
+        String xml = ApiExplorer.xmlDownload(searchValue, searchField);
         /* xml 파싱 -> List<item>*/
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
