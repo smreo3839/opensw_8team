@@ -169,6 +169,48 @@
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
+            <!-- Login widget-->
+            <div class="card mb-4">
+                <div class="card-header">LOGIN</div>
+
+                <a href="javascript:kakaoLogin();"><img src="//k.kakaocdn.net/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="87%" height ="50px" /></a>
+                <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+                <script>
+                    //83b64438cacc7004c4c8981d24f7d1d4
+                    window.Kakao.init("83b64438cacc7004c4c8981d24f7d1d4");//고유인증키로 세션초기화
+                    function kakaoLogin() {
+                        window.Kakao.Auth.login({
+                            scope:'profile_nickname, account_email',
+                            success: function (authObj){
+
+                                console.log(authObj);//엑세스 토큰값
+                                window.Kakao.API.request({
+                                    url:'/v2/user/me',
+                                    success: res => {
+                                        const kakao_account = res.kakao_account;
+                                        var nickname = res.kakao_account.profile.nickname;
+                                        var email = res.kakao_account.email;
+                                        console.log(kakao_account);
+                                        console.log(email, nickname);
+                                        console.log(authObj.access_token);
+                                        alert(JSON.stringify(res.kakao_account.profile.nickname+" 님 환영합니다.")); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
+                                        alert(JSON.stringify("엑세스 토큰은 "+ authObj.access_token + "입니다.")); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
+                                    }
+                                });
+                            }
+                        });
+
+                    }
+                </script>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">LOGIN-INFO</div>
+                <div class="card-body">
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value= 'res.kakao_account.profile.nickname'>
+                    </div>
+                </div>
+            </div>
             <!-- Search widget-->
             <div class="card mb-4">
                 <div class="card-header">Search</div>
