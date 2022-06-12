@@ -2,6 +2,8 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
@@ -11,6 +13,7 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet"/>
+    <%@ page import="test.*" %>
     <%@ page import="test.ApiExplorer" %>
     <%@ page import="test.Item" %>
     <%@ page import="java.util.*" %>
@@ -169,6 +172,53 @@
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
+            <!-- Login widget-->
+            <div class="card mb-4">
+                <div class="card-header">LOGIN</div>
+
+                <a href="javascript:kakaoLogin();"><img
+                        src="//k.kakaocdn.net/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="87%"
+                        height="50px"/></a>
+                <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+                <script>
+                    //83b64438cacc7004c4c8981d24f7d1d4
+                    window.Kakao.init("3d378fa33a040e3ccd7fd6453f275b84");//고유인증키로 세션초기화
+                    function kakaoLogin() {
+                        window.Kakao.Auth.login({
+                            scope: 'profile_nickname, account_email',
+                            success: function (authObj) {
+
+                                console.log(authObj);//엑세스 토큰값
+                                window.Kakao.API.request({
+                                    url: '/v2/user/me',
+                                    success: res => {
+                                        const kakao_account = res.kakao_account;
+                                        var nickname = res.kakao_account.profile.nickname;
+                                        var email = res.kakao_account.email;
+                                        console.log(kakao_account);
+                                        console.log(email, nickname);
+                                        console.log(authObj.access_token);
+                                        $('#nickname_test').val(nickname);
+                                        $('#email_test').val(email);
+                                        // alert(); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
+                                        // alert(JSON.stringify("엑세스 토큰은 " + authObj.access_token + "입니다.")); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
+                                    }
+                                });
+                            }
+                        });
+
+                    }
+                </script>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">LOGIN-INFO</div>
+                <div class="card-body">
+                    <div class="col-sm-10">
+                        <input type="text" name="nickname_test" id="nickname_test">
+                        <input type="text" name="email_test" id="email_test">
+                    </div>
+                </div>
+            </div>
             <!-- Search widget-->
             <div class="card mb-4">
                 <div class="card-header">Search</div>
@@ -190,27 +240,27 @@
                 </div>
             </div>
             <!-- Categories widget-->
-<%--            <div class="card mb-4">--%>
-<%--                <div class="card-header">Categories</div>--%>
-<%--                <div class="card-body">--%>
-<%--                    <div class="row">--%>
-<%--                        <div class="col-sm-6">--%>
-<%--                            <ul class="list-unstyled mb-0">--%>
-<%--                                <li><a href="#!">Web Design</a></li>--%>
-<%--                                <li><a href="#!">HTML</a></li>--%>
-<%--                                <li><a href="#!">Freebies</a></li>--%>
-<%--                            </ul>--%>
-<%--                        </div>--%>
-<%--                        <div class="col-sm-6">--%>
-<%--                            <ul class="list-unstyled mb-0">--%>
-<%--                                <li><a href="#!">JavaScript</a></li>--%>
-<%--                                <li><a href="#!">CSS</a></li>--%>
-<%--                                <li><a href="#!">Tutorials</a></li>--%>
-<%--                            </ul>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
+            <%--            <div class="card mb-4">--%>
+            <%--                <div class="card-header">Categories</div>--%>
+            <%--                <div class="card-body">--%>
+            <%--                    <div class="row">--%>
+            <%--                        <div class="col-sm-6">--%>
+            <%--                            <ul class="list-unstyled mb-0">--%>
+            <%--                                <li><a href="#!">Web Design</a></li>--%>
+            <%--                                <li><a href="#!">HTML</a></li>--%>
+            <%--                                <li><a href="#!">Freebies</a></li>--%>
+            <%--                            </ul>--%>
+            <%--                        </div>--%>
+            <%--                        <div class="col-sm-6">--%>
+            <%--                            <ul class="list-unstyled mb-0">--%>
+            <%--                                <li><a href="#!">JavaScript</a></li>--%>
+            <%--                                <li><a href="#!">CSS</a></li>--%>
+            <%--                                <li><a href="#!">Tutorials</a></li>--%>
+            <%--                            </ul>--%>
+            <%--                        </div>--%>
+            <%--                    </div>--%>
+            <%--                </div>--%>
+            <%--            </div>--%>
             <!-- Side widget-->
             <div class="card mb-4">
                 <div class="card-header">검색결과</div>
