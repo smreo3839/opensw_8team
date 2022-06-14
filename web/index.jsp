@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
@@ -177,10 +178,10 @@
                 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
                 <script>
                     //83b64438cacc7004c4c8981d24f7d1d4
-                    window.Kakao.init("83b64438cacc7004c4c8981d24f7d1d4");//고유인증키로 세션초기화
+                    window.Kakao.init("49167c56d05365c507a9974a99ef4229");//고유인증키로 세션초기화
                     function kakaoLogin() {
                         window.Kakao.Auth.login({
-                            scope:'profile_nickname, account_email',
+                            scope:'profile_nickname, account_email, gender ,age_range, birthday',
                             success: function (authObj){
 
                                 console.log(authObj);//엑세스 토큰값
@@ -190,11 +191,19 @@
                                         const kakao_account = res.kakao_account;
                                         var nickname = res.kakao_account.profile.nickname;
                                         var email = res.kakao_account.email;
+                                        var gender = res.kakao_account.gender;
+                                        var birthday = res.kakao_account.birthday;
+                                        var age_range = res.kakao_account.age_range;
                                         console.log(kakao_account);
                                         console.log(email, nickname);
                                         console.log(authObj.access_token);
                                         alert(JSON.stringify(res.kakao_account.profile.nickname+" 님 환영합니다.")); //<---- kakao.api.request 에서 불러온 결과값 json형태로 출력
                                         alert(JSON.stringify("엑세스 토큰은 "+ authObj.access_token + "입니다.")); //<----Kakao.Auth.createLoginButton에서 불러온 결과값 json형태로 출력
+                                        $('#nickname').val(nickname);
+                                        $('#email').val(email);
+                                        $('#gender').val(gender);
+                                        $('#birthday').val(birthday);
+                                        $('#age_range').val(age_range);
                                     }
                                 });
                             }
@@ -204,10 +213,14 @@
                 </script>
             </div>
             <div class="card mb-4">
-                <div class="card-header">LOGIN-INFO</div>
+                <div class="card-header">PERSONAL-INFO</div>
                 <div class="card-body">
                     <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value= 'res.kakao_account.profile.nickname'>
+                        <input type="text" name="nickname" id="nickname" readonly>
+                        <input type="text" name="email" id="email" readonly>
+                        <input type="text" name="gender" id="gender" readonly>
+                        <input type="text" name="age_range" id="age_range" readonly>
+                        <input type="text" name="birthday" id="birthday" readonly>
                     </div>
                 </div>
             </div>
